@@ -17,7 +17,7 @@ set(GLFW_LINK ${LIB_DIR}libglfw.3.dylib)
 link_libraries(${GLFW_LINK})
 
 # 执行编译命令
-set(SOURCES ${SRC_DIR}glad.c ${SRC_DIR}main.cpp)
+set(SOURCES ${SRC_DIR}glad.c ${SRC_DIR}CH1_01_Triggle.cpp)
 add_executable(MyOpenGL ${SOURCES})
 
 # 链接系统的 OpenGL 框架
@@ -35,7 +35,7 @@ include(CPack)
 # 第一次执行
 # mkdir build
 # cd build
-# cmake 
+# cmake ..
 
 
 # 在build 目录下执行  make
