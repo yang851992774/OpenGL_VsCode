@@ -17,7 +17,13 @@ set(GLFW_LINK ${LIB_DIR}libglfw.3.dylib)
 link_libraries(${GLFW_LINK})
 
 # 执行编译命令
-set(SOURCES ${SRC_DIR}glad.c ${SRC_DIR}CH1_01_Triggle.cpp)
+# set(SOURCES ${SRC_DIR}glad.c ${SRC_DIR}CH1_01_Triggle.cpp)
+# set(SOURCES ${SRC_DIR}glad.c ${SRC_DIR}CH1_01_Triggle_EBO.cpp)
+set(SOURCES ${SRC_DIR}glad.c ${SRC_DIR}CH1_01_S2_2Triggle.cpp)
+
+
+
+
 add_executable(MyOpenGL ${SOURCES})
 
 # 链接系统的 OpenGL 框架

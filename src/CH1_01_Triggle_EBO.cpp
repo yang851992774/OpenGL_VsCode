@@ -24,7 +24,7 @@ const char *fragmentShaderSource = "#version 330 core\n"
                                    "out vec4 FragColor;\n"
                                    "void main()\n"
                                    "{\n"
-                                   "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                   "   FragColor = vec4(1.0f, 0.0f, 0.2f, 1.0f);\n"
                                    "}\n\0";
 
 int main()
@@ -103,24 +103,22 @@ int main()
     glDeleteShader(fragmentShader);
 
     // VAO 中包含很多 VBO ,一个VBO 中有「position,color,uv 等信息构成」
-    // float vertices[] = {
-    //     -0.5f, -0.5f, 0.0f,
-    //     0.5f, -0.5f, 0.0f,
-    //     0.0f, 0.5f, 0.0f};
-
-    // 使用glDrawArry 绘制2个三角形 练习题1
     float vertices[] = {
-        // first triangle
-        -0.9f, -0.5f, 0.0f, // left
-        -0.0f, -0.5f, 0.0f, // right
-        -0.45f, 0.5f, 0.0f, // top
-                            // second triangle
-        0.0f, -0.5f, 0.0f,  // left
-        0.9f, -0.5f, 0.0f,  // right
-        0.45f, 0.5f, 0.0f   // top
+        0.5f, 0.5f, 0.0f,   // 右上角
+        0.5f, -0.5f, 0.0f,  // 右下角
+        -0.5f, -0.5f, 0.0f, // 左下角
+        -0.5f, 0.5f, 0.0f   // 左上角
+    };
+    unsigned int indices[] = {
+        // 注意索引从0开始!
+        // 此例的索引(0,1,2,3)就是顶点数组vertices的下标，
+        // 这样可以由下标代表顶点组合成矩形
+
+        0, 1, 3, // 第一个三角形
+        1, 2, 3  // 第二个三角形
     };
 
-    unsigned int VBO, VAO;
+    unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
@@ -128,15 +126,25 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW); // GL_STATIC_DRAW  GL_DYNAMIC_DRAW   GL_STREAM_DRAW
 
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices, GL_STATIC_DRAW);
+
     // 顶点起步、顶点个数、数据类型，是否希望被标准化（0，1）,步长（3个顶点）， 位置数据在缓冲中起始位置的偏移量(Offset)
-    // 第二个参数指定顶点属性的大小。顶点属性是一个vec3，它由3个值组成，所以大小是3。
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
     // 可以安全地解除绑定
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // 解除对 VAO 的绑定
+
+    // Notes : 不能解绑
+    //  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    //  解除对 VAO 的绑定
     glBindVertexArray(0);
+
+    // 线框模式渲染
+    //  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // 函数在我们每次循环的开始前检查一次GLFW是否被要求退出
     while (!glfwWindowShouldClose(window))
@@ -149,10 +157,12 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
 
+        // glBindVertexArray(VAO);
         // glDrawArrays(GL_TRIANGLES, 0, 3);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         // 检查并调用事件，交换缓冲
         //  函数会交换颜色缓冲（它是一个储存着GLFW窗口每一个像素颜色值的大缓冲），它在这一迭代中被用来绘制，并且将会作为输出显示在屏幕上
@@ -165,6 +175,7 @@ int main()
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
 
     // 渲染循环结束后我们需要正确释放/删除之前的分配的所有资源
