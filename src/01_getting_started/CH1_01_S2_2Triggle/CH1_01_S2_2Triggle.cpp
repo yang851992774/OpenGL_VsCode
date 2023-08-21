@@ -124,6 +124,10 @@ int main()
         std::cout << "link shader green fail" << infoLog << std::endl;
     }
 
+    // int nrAttributes;
+    // glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+    // std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
+
     // 编译完成后删除Shader
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
@@ -163,11 +167,6 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), &vertices2, GL_STATIC_DRAW); // GL_STATIC_DRAW  GL_DYNAMIC_DRAW   GL_STREAM_DRAW
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
-
-    // // 可以安全地解除绑定
-    // glBindBuffer(GL_ARRAY_BUFFER, 0);
-    // // 解除对 VAO 的绑定
-    // glBindVertexArray(0);
 
     // 函数在我们每次循环的开始前检查一次GLFW是否被要求退出
     while (!glfwWindowShouldClose(window))
