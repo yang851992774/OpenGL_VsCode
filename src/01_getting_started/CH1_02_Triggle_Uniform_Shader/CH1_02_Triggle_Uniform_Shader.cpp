@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include "root_directory.h"
 
 #include <learnopengl/shader_s.h>
+#include <learnopengl/filesystem.h>
 
 void frame_buffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -48,17 +48,8 @@ int main()
 
     // OpenGL渲染窗口的尺寸大小，即视口(Viewport)
     glViewport(0, 0, 800, 600);
-    char vsshader[100];
-    char *vsName = "/resources/shader/3_3_shader.vs";
-    strcat(vsshader, logl_root);
-    strcat(vsshader, vsName);
 
-    char fsshader[100];
-    char *fsName = "/resources/shader/3_3_shader.fs";
-    strcat(fsshader, logl_root);
-    strcat(fsshader, fsName);
-
-    Shader ourShader(vsshader, fsshader); // you can name your shader files however you like
+    Shader ourShader(FileSystem::getPath("resources/shader/3_3_shader.vs").c_str(), FileSystem::getPath("resources/shader/3_3_shader.fs").c_str());
 
     float vertices[] = {
         // 位置              // 颜色

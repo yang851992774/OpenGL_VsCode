@@ -67,6 +67,8 @@ set(LIBS ${LIBS} ${APPLE_LIBS})
 configure_file(configuration/root_directory.h.in configuration/root_directory.h)
 include_directories(${CMAKE_BINARY_DIR}/configuration)
 
+add_library(STB_IMAGE "src/stb_image.cpp")
+set(LIBS ${LIBS} STB_IMAGE)
 
 add_library(GLAD "src/glad.c")
 set(LIBS ${LIBS} GLAD)
@@ -83,6 +85,7 @@ set(01_getting_started
     CH1_01_Triggle_EBO
     CH1_02_Triggle_Uniform
     CH1_02_Triggle_Uniform_Shader
+    CH2_02_Tex2D
 )
 
 # add_library(GLAD "src/tools/glad.c")

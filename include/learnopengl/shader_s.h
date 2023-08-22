@@ -26,8 +26,8 @@ public:
         fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try
         {
-            std::cout << vertexPath << std::endl;
-            std::cout << fragmentPath << std::endl;
+            // std::cout << vertexPath << std::endl;
+            // std::cout << fragmentPath << std::endl;
 
             // open files
             vShaderFile.open(vertexPath);
@@ -44,8 +44,8 @@ public:
             vertexCode = vShaderStream.str();
             fragmentCode = fShaderStream.str();
 
-            std::cout << vertexCode << std::endl;
-            std::cout << fragmentCode << std::endl;
+            // std::cout << vertexCode << std::endl;
+            // std::cout << fragmentCode << std::endl;
         }
         catch (std::ifstream::failure &e)
         {
